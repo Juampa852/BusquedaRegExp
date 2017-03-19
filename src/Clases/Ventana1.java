@@ -190,10 +190,11 @@ public class Ventana1 extends javax.swing.JFrame {
     private void seleccionCarpetaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionCarpetaButtonActionPerformed
         JFileChooser carpeta= new JFileChooser();
         carpeta.setDialogType(JFileChooser.OPEN_DIALOG);
-        carpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //carpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int opcion = carpeta.showOpenDialog(null);
         if(opcion==JFileChooser.APPROVE_OPTION){
             seleccion=carpeta.getSelectedFile();
+            JOptionPane.showMessageDialog(null, seleccion.length()/1024.00);
             if(seleccion.exists()&&seleccion.isDirectory())
                 carpetaField.setText(seleccion.toString());
         }

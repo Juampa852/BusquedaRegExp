@@ -18,7 +18,7 @@ import java.math.*;
 public class Buscador {
     private String regEx;
     private String validar;
-    private ArrayList<String> lista=new ArrayList<>();
+    private ArrayList<File> lista=new ArrayList<>();
     
     private File seleccion;
     private String nombre, extension;
@@ -27,7 +27,7 @@ public class Buscador {
         this.seleccion=seleccion;
         this.nombre=nombre;
         this.extension=extension;
-        this.menor= (long) Math.ceil(menor);
+        this.menor= (long)Math.ceil(menor);
         this.mayor=(long)Math.ceil(mayor);
     }
     private void recorrer(File file) {
@@ -38,19 +38,43 @@ public class Buscador {
                 if (archivos[i].isDirectory()) {
                     recorrer(archivos[i]);
                 } else {
-                    lista.add(archivos[i].getAbsolutePath());
+                    lista.add(archivos[i]);
                 }
             }
         }
     }
     public ArrayList<String> validos (File directorio){
         ArrayList<String> validos= new ArrayList<>();
-        
+        regEx=".*"+nombre+".*"+extension;
+        Pattern patron=Pattern.compile(regEx);
+        Matcher validar;
+        if(seleccion.isDirectory()){
+            recorrer(seleccion);
+            for (int i = 0; i < lista.size(); i++) {
+                File temp=lista.get(i);
+                validar=patron.matcher(temp.getName());
+                if(mayor!=0){
+                    if(mayor>menor){
+                        if(validar.find()){
+                            long tam=temp.length();
+                            if(tam<=mayor&&tam>=menor)
+                                validos.add(temp.getAbsolutePath());
+                        }
+                    }
+                }
+                else{
+                    if(validar.find())
+                        validos.add(temp.getAbsolutePath());
+                    
+                }
+            }
+        }else{
+            validar=patron.matcher(seleccion.getName());
+            if(validar.find())
+                validos.add(seleccion.getAbsolutePath());
+        }
         return validos;
     }
-//    private boolean validar(String expReg, String cadena){
-//        
-//    }
 //    String regex=".*"+busquedaField.getText()+".*";
 //        String busqueda=jTextField1.getText();
 //        Pattern pattern = Pattern.compile(regex);
