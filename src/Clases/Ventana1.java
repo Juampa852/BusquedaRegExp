@@ -4,8 +4,12 @@
  * and open the template in the editor.
  */
 package Clases;
+import Excepciones.Excep;
 import java.io.File;
 import static java.lang.Math.pow;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
@@ -18,6 +22,7 @@ import javax.swing.JOptionPane;
 public class Ventana1 extends javax.swing.JFrame {
     private File seleccion;
     private Buscador buscar;
+    private ArrayList<String> validos= new ArrayList<>();
     /**
      * Creates new form Ventana1
      */
@@ -51,6 +56,8 @@ public class Ventana1 extends javax.swing.JFrame {
         tamSpinner2 = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         carpetaField = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        area1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Buscador de Archivos");
@@ -63,6 +70,12 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel1.setText("Nombre de Archivo:");
 
+        nombreField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombreFieldKeyReleased(evt);
+            }
+        });
+
         seleccionCarpetaButton.setText("Seleccionar");
         seleccionCarpetaButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,7 +83,7 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         });
 
-        buscarButton.setText("Buscar");
+        buscarButton.setText("Volver a Buscar");
         buscarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarButtonActionPerformed(evt);
@@ -79,6 +92,12 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel3.setText("Extensión:");
 
+        extensionField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                extensionFieldKeyReleased(evt);
+            }
+        });
+
         jLabel4.setText("Tamaño entre:");
 
         jLabel5.setText("y");
@@ -86,11 +105,26 @@ public class Ventana1 extends javax.swing.JFrame {
         unidadCombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KiB", "MiB", "GiB" }));
 
         unidadCombo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KiB", "MiB", "GiB" }));
+        unidadCombo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unidadCombo1ActionPerformed(evt);
+            }
+        });
 
         tamSpinner1.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 0.01d));
         tamSpinner1.setToolTipText("");
+        tamSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tamSpinner1StateChanged(evt);
+            }
+        });
 
         tamSpinner2.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 0.01d));
+        tamSpinner2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tamSpinner2StateChanged(evt);
+            }
+        });
 
         jLabel2.setText("Carpeta:");
 
@@ -116,13 +150,13 @@ public class Ventana1 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tamSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(tamSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(unidadCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
@@ -161,6 +195,10 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addComponent(buscarButton))
         );
 
+        area1.setColumns(20);
+        area1.setRows(5);
+        jScrollPane2.setViewportView(area1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -172,6 +210,10 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(jScrollPane1))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,7 +221,9 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -190,28 +234,64 @@ public class Ventana1 extends javax.swing.JFrame {
     private void seleccionCarpetaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionCarpetaButtonActionPerformed
         JFileChooser carpeta= new JFileChooser();
         carpeta.setDialogType(JFileChooser.OPEN_DIALOG);
-        //carpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        carpeta.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int opcion = carpeta.showOpenDialog(null);
         if(opcion==JFileChooser.APPROVE_OPTION){
             seleccion=carpeta.getSelectedFile();
-            JOptionPane.showMessageDialog(null, seleccion.length()/1024.00);
             if(seleccion.exists()&&seleccion.isDirectory())
                 carpetaField.setText(seleccion.toString());
         }
     }//GEN-LAST:event_seleccionCarpetaButtonActionPerformed
 
     private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
-       seleccion=new File(carpetaField.getText());
-       if(seleccion.exists()){
-           String nombre=nombreField.getText().trim();
-           String extension= extensionField.getText().trim();
-           double menor=((double)(tamSpinner1.getValue()))*pow(1024,unidadCombo1.getSelectedIndex()+1);
-           double mayor=((double)(tamSpinner2.getValue()))*pow(1024,unidadCombo2.getSelectedIndex()+1);
-           buscar = new Buscador(seleccion,nombre,extension,menor, mayor);
-               
-       }
+        JOptionPane.showMessageDialog(null, buscar.getRegEx());
     }//GEN-LAST:event_buscarButtonActionPerformed
 
+    private void nombreFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreFieldKeyReleased
+//        int tecla=evt.getKeyCode();
+//        if(tecla==10){
+            busqueda();
+//        }
+    }//GEN-LAST:event_nombreFieldKeyReleased
+
+    private void extensionFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_extensionFieldKeyReleased
+//        int tecla=evt.getKeyCode();
+//        if(tecla==10){
+            busqueda();
+//        }
+    }//GEN-LAST:event_extensionFieldKeyReleased
+
+    private void tamSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tamSpinner1StateChanged
+        busqueda();
+    }//GEN-LAST:event_tamSpinner1StateChanged
+
+    private void tamSpinner2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tamSpinner2StateChanged
+        busqueda();
+    }//GEN-LAST:event_tamSpinner2StateChanged
+
+    private void unidadCombo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unidadCombo1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unidadCombo1ActionPerformed
+    private void busqueda (){
+       seleccion=new File(carpetaField.getText());
+       if(seleccion.exists()){
+           try {
+               String nombre=nombreField.getText().trim();
+               String extension= extensionField.getText().trim();
+               double menor=((double)(tamSpinner1.getValue()))*pow(1024.00,unidadCombo1.getSelectedIndex()+1);
+               double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
+               buscar = new Buscador(seleccion,nombre,extension,menor, mayor);
+               validos=buscar.validos();
+               area1.setText("");
+               for (int i = 0; i < validos.size(); i++) {
+                   area1.setText(area1.getText()+validos.get(i)+"\n");
+               }
+               //JOptionPane.showMessageDialog(null,"Búsqueda Completada","Terminado",JOptionPane.INFORMATION_MESSAGE);
+           } catch (Excep ex) {
+               JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+           }
+       }
+    }
     /**
      * @param args the command line arguments
      */
@@ -248,6 +328,7 @@ public class Ventana1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea area1;
     private javax.swing.JButton buscarButton;
     private javax.swing.JTextField carpetaField;
     private javax.swing.JTextField extensionField;
@@ -258,6 +339,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTree jTree1;
     private javax.swing.JTextField nombreField;
     private javax.swing.JButton seleccionCarpetaButton;
