@@ -18,12 +18,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * @author Juampa Monroy
  */
-public class Buscador implements Runnable{
+public class Buscador{
     private ArrayList<File> lista=new ArrayList<>();
     private File seleccion;
     private String nombre, extension, regEx;
     private long menor, mayor;
-    private JProgressBar barra;
     public Buscador(File seleccion, String nombre, String extension, double menor, double mayor) throws Excep{
         if(seleccion.exists()){
             this.seleccion=seleccion;
@@ -33,9 +32,6 @@ public class Buscador implements Runnable{
             this.mayor=(long)Math.ceil(mayor);
         }else
             throw new Excep("Este directorio o archivo no existe");
-    }
-    public void progress(JProgressBar barra){
-        this.barra=barra;
     }
     private void recorrer(File file) {
         
@@ -127,10 +123,5 @@ public class Buscador implements Runnable{
 
     public long getMayor() {
         return mayor;
-    }
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
