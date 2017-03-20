@@ -55,4 +55,7 @@ public class CustomListModel extends AbstractListModel {
     public String getElement(int index){
         return lista.get(index);
     }
+    public void setModel(ArrayList<String> lista){
+        this.lista=lista;
+    }
 }

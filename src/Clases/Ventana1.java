@@ -29,6 +29,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private Buscador buscar;
     private ArrayList<String> validos= new ArrayList<>();
     private CustomListModel modelo =new CustomListModel();
+    private Thread exe;
     /**
      * Creates new form Ventana1
      */
@@ -66,6 +67,7 @@ public class Ventana1 extends javax.swing.JFrame {
         lista = new javax.swing.JList<>();
         abrirButton = new javax.swing.JButton();
         carpetaContButton = new javax.swing.JButton();
+        progress1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Buscador de Archivos");
@@ -226,26 +228,33 @@ public class Ventana1 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(258, 258, 258)
-                .addComponent(abrirButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(carpetaContButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(258, 258, 258)
+                        .addComponent(abrirButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(carpetaContButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(progress1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progress1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(abrirButton)
@@ -325,20 +334,29 @@ public class Ventana1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_carpetaContButtonActionPerformed
     private void busqueda (){
-       seleccion=new File(carpetaField.getText());
-       if(seleccion.exists()){
+        if(exe!=null)
+            exe.stop();
+        seleccion=new File(carpetaField.getText());
+        if(seleccion.exists()){
            try {
-               String nombre=nombreField.getText().trim();
-               String extension= extensionField.getText().trim();
-               double menor=((double)(tamSpinner1.getValue()))*pow(1024.00,unidadCombo1.getSelectedIndex()+1);
-               double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
-               buscar = new Buscador(seleccion,nombre,extension,menor, mayor);
-               validos=buscar.validos();
-               modelo=new CustomListModel();
-               for (int i = 0; i < validos.size(); i++) {
-                   modelo.add(validos.get(i));
-               }
-               lista.setModel(modelo);
+                String nombre=nombreField.getText().trim();
+                String extension= extensionField.getText().trim();
+                double menor=((double)(tamSpinner1.getValue()))*pow(1024.00,unidadCombo1.getSelectedIndex()+1);
+                double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
+                buscar = new Buscador(seleccion,nombre,extension,menor, mayor);
+                buscar.variables(progress1,lista);
+                exe=new Thread(buscar);
+                exe.start();
+                
+                /*while(exe.isAlive()){
+                    validos=buscar.validos();
+                    if(validos!=null){
+                        for (int i = 0; i < validos.size(); i++) {
+                            modelo.add(validos.get(i));
+                        }
+                        lista.setModel(modelo);
+                    }
+                }*/
            } catch (Excep ex) {
                JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
            }
@@ -395,6 +413,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> lista;
     private javax.swing.JTextField nombreField;
+    private javax.swing.JProgressBar progress1;
     private javax.swing.JButton regExButton;
     private javax.swing.JButton seleccionCarpetaButton;
     private javax.swing.JSpinner tamSpinner1;
