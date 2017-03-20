@@ -75,6 +75,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel1.setText("El Nombre Contiene");
 
+        nombreField.setNextFocusableComponent(extensionField);
         nombreField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 nombreFieldKeyReleased(evt);
@@ -82,6 +83,7 @@ public class Ventana1 extends javax.swing.JFrame {
         });
 
         seleccionCarpetaButton.setText("Seleccionar");
+        seleccionCarpetaButton.setNextFocusableComponent(nombreField);
         seleccionCarpetaButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 seleccionCarpetaButtonActionPerformed(evt);
@@ -89,6 +91,7 @@ public class Ventana1 extends javax.swing.JFrame {
         });
 
         buscarButton.setText("Volver a Buscar");
+        buscarButton.setNextFocusableComponent(regExButton);
         buscarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarButtonActionPerformed(evt);
@@ -97,6 +100,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel3.setText("Extensión:");
 
+        extensionField.setNextFocusableComponent(tamSpinner1);
         extensionField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 extensionFieldKeyReleased(evt);
@@ -108,11 +112,14 @@ public class Ventana1 extends javax.swing.JFrame {
         jLabel5.setText("y");
 
         unidadCombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KiB", "MiB", "GiB" }));
+        unidadCombo2.setNextFocusableComponent(buscarButton);
 
         unidadCombo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KiB", "MiB", "GiB" }));
+        unidadCombo1.setNextFocusableComponent(tamSpinner2);
 
         tamSpinner1.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 0.01d));
         tamSpinner1.setToolTipText("");
+        tamSpinner1.setNextFocusableComponent(unidadCombo1);
         tamSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tamSpinner1StateChanged(evt);
@@ -120,6 +127,7 @@ public class Ventana1 extends javax.swing.JFrame {
         });
 
         tamSpinner2.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 0.01d));
+        tamSpinner2.setNextFocusableComponent(unidadCombo2);
         tamSpinner2.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tamSpinner2StateChanged(evt);
@@ -128,7 +136,10 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel2.setText("Carpeta:");
 
+        carpetaField.setNextFocusableComponent(seleccionCarpetaButton);
+
         regExButton.setText("Mostrar Expresión Regular");
+        regExButton.setNextFocusableComponent(carpetaField);
         regExButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regExButtonActionPerformed(evt);
@@ -206,9 +217,11 @@ public class Ventana1 extends javax.swing.JFrame {
                     .addComponent(regExButton)))
         );
 
+        lista.setNextFocusableComponent(abrirButton);
         jScrollPane3.setViewportView(lista);
 
         abrirButton.setText("Abrir");
+        abrirButton.setNextFocusableComponent(carpetaContButton);
         abrirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 abrirButtonActionPerformed(evt);
@@ -216,6 +229,7 @@ public class Ventana1 extends javax.swing.JFrame {
         });
 
         carpetaContButton.setText("Ver carpeta contenedora");
+        carpetaContButton.setNextFocusableComponent(lista);
         carpetaContButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 carpetaContButtonActionPerformed(evt);

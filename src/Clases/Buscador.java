@@ -21,7 +21,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class Buscador{
     private ArrayList<File> lista=new ArrayList<>();
     private File seleccion;
-    private String nombre, extension, regEx;
+    private String nombre, extension, regEx="";
     private long menor, mayor;
     public Buscador(File seleccion, String nombre, String extension, double menor, double mayor) throws Excep{
         if(seleccion.exists()){
@@ -38,10 +38,14 @@ public class Buscador{
         File archivos[] = file.listFiles();
         if (archivos != null) {
             for (int i = 0; i < archivos.length; i++) {
-                if (archivos[i].isDirectory()) {
-                    recorrer(archivos[i]);
-                } else {
-                    lista.add(archivos[i]);
+                try{
+                    if (archivos[i].isDirectory()) {
+                        recorrer(archivos[i]);
+                    } else {
+                        lista.add(archivos[i]);
+                    }
+                }catch(Exception ex){
+                    
                 }
             }
         }
