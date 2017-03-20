@@ -12,15 +12,18 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import java.math.*; 
 import Excepciones.*;
+import javax.swing.JProgressBar;
+import javax.swing.tree.DefaultMutableTreeNode;
 /**
  *
  * @author Juampa Monroy
  */
-public class Buscador {
+public class Buscador implements Runnable{
     private ArrayList<File> lista=new ArrayList<>();
     private File seleccion;
     private String nombre, extension, regEx;
     private long menor, mayor;
+    private JProgressBar barra;
     public Buscador(File seleccion, String nombre, String extension, double menor, double mayor) throws Excep{
         if(seleccion.exists()){
             this.seleccion=seleccion;
@@ -30,6 +33,9 @@ public class Buscador {
             this.mayor=(long)Math.ceil(mayor);
         }else
             throw new Excep("Este directorio o archivo no existe");
+    }
+    public void progress(JProgressBar barra){
+        this.barra=barra;
     }
     private void recorrer(File file) {
         
@@ -51,7 +57,7 @@ public class Buscador {
             regEx=".*"+nombre+".*\\."+extension;
         }else if((!nombre.equals(""))&&(extension.equals(""))){
             regEx=".*"+nombre+".*";
-        }if((nombre.equals(""))&&(!extension.equals(""))){
+        }else if((nombre.equals(""))&&(!extension.equals(""))){
             regEx=".*\\."+extension;
         }
         Pattern patron=Pattern.compile(regEx);
@@ -62,8 +68,8 @@ public class Buscador {
             for (int i = 0; i < lista.size(); i++) {
                 File temp=lista.get(i);
                 validar=patron.matcher(temp.getName());
-                if(mayor!=0){
-                    if(mayor>menor){
+                if(mayor!=0&&menor!=0){
+                    if(mayor>=menor){
                         if(validar.matches()){
                             long tam=temp.length();
                             if(tam<=mayor&&tam>=menor)
@@ -72,10 +78,13 @@ public class Buscador {
                     }else
                         throw new Excep("Los rangos de búsqueda por tamaño de archivo no son válidos");
                 }
+                else if(mayor==0&&menor!=0)
+                    throw new Excep("Los rangos de búsqueda por tamaño de archivo no son válidos");
                 else{
                     if(validar.matches())
                         validos.add(temp.getAbsolutePath().substring(1+(int)seleccion.getAbsolutePath().length()));
                 }
+                
             }
         }else{
             validar=patron.matcher(seleccion.getName());
@@ -118,5 +127,10 @@ public class Buscador {
 
     public long getMayor() {
         return mayor;
+    }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

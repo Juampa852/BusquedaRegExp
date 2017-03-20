@@ -15,6 +15,9 @@ import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 
 import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 /**
  *
  * @author Juampa Monroy
@@ -23,11 +26,13 @@ public class Ventana1 extends javax.swing.JFrame {
     private File seleccion;
     private Buscador buscar;
     private ArrayList<String> validos= new ArrayList<>();
+    DefaultMutableTreeNode root;
     /**
      * Creates new form Ventana1
      */
     public Ventana1() {
         initComponents();
+        
     }
 
     /**
@@ -40,7 +45,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        archivosTree = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         nombreField = new javax.swing.JTextField();
@@ -56,6 +61,7 @@ public class Ventana1 extends javax.swing.JFrame {
         tamSpinner2 = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         carpetaField = new javax.swing.JTextField();
+        regExButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         area1 = new javax.swing.JTextArea();
 
@@ -63,12 +69,12 @@ public class Ventana1 extends javax.swing.JFrame {
         setTitle("Buscador de Archivos");
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Sin Resultados");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jScrollPane1.setViewportView(jTree1);
+        archivosTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jScrollPane1.setViewportView(archivosTree);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterio de Búsqueda"));
 
-        jLabel1.setText("Nombre de Archivo:");
+        jLabel1.setText("El Nombre Contiene");
 
         nombreField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -128,6 +134,13 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel2.setText("Carpeta:");
 
+        regExButton.setText("Mostrar Expresión Regular");
+        regExButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regExButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,28 +156,30 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nombreField))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tamSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(unidadCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tamSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(unidadCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 250, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tamSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(unidadCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tamSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(unidadCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 250, Short.MAX_VALUE))
+                        .addGap(93, 93, 93)
+                        .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(regExButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +207,9 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(tamSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(unidadCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buscarButton))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buscarButton)
+                    .addComponent(regExButton)))
         );
 
         area1.setColumns(20);
@@ -204,15 +221,13 @@ public class Ventana1 extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -221,9 +236,9 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -244,7 +259,7 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_seleccionCarpetaButtonActionPerformed
 
     private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
-        JOptionPane.showMessageDialog(null, buscar.getRegEx());
+        busqueda();
     }//GEN-LAST:event_buscarButtonActionPerformed
 
     private void nombreFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreFieldKeyReleased
@@ -272,6 +287,10 @@ public class Ventana1 extends javax.swing.JFrame {
     private void unidadCombo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unidadCombo1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_unidadCombo1ActionPerformed
+
+    private void regExButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regExButtonActionPerformed
+        JOptionPane.showMessageDialog(null, buscar.getRegEx(),"Expresión Regular",JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_regExButtonActionPerformed
     private void busqueda (){
        seleccion=new File(carpetaField.getText());
        if(seleccion.exists()){
@@ -282,15 +301,21 @@ public class Ventana1 extends javax.swing.JFrame {
                double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
                buscar = new Buscador(seleccion,nombre,extension,menor, mayor);
                validos=buscar.validos();
+               crearArbol();
                area1.setText("");
                for (int i = 0; i < validos.size(); i++) {
                    area1.setText(area1.getText()+validos.get(i)+"\n");
+                   //validos.get(i).replace(File.pathSeparatorChar, ' ');
                }
-               //JOptionPane.showMessageDialog(null,"Búsqueda Completada","Terminado",JOptionPane.INFORMATION_MESSAGE);
            } catch (Excep ex) {
                JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
            }
        }
+    }
+    private void crearArbol(){
+        root= new DefaultMutableTreeNode(seleccion.getAbsolutePath());
+        DefaultTreeModel modelo = new DefaultTreeModel(root);
+        archivosTree.setModel(modelo);
     }
     /**
      * @param args the command line arguments
@@ -328,6 +353,7 @@ public class Ventana1 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTree archivosTree;
     private javax.swing.JTextArea area1;
     private javax.swing.JButton buscarButton;
     private javax.swing.JTextField carpetaField;
@@ -340,8 +366,8 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTree jTree1;
     private javax.swing.JTextField nombreField;
+    private javax.swing.JButton regExButton;
     private javax.swing.JButton seleccionCarpetaButton;
     private javax.swing.JSpinner tamSpinner1;
     private javax.swing.JSpinner tamSpinner2;
