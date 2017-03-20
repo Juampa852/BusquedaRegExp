@@ -25,17 +25,19 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class Buscador implements Runnable{
     private ArrayList<File> lista=new ArrayList<>();
     private File seleccion;
-    private String nombre, extension, regEx;
+    private String nombre, extension, antes, despues, regEx;
     private long menor, mayor;
     private ArrayList<String> validos;
     private JProgressBar barra;
     private CustomListModel modelo;
     private JList list;
-    public Buscador(File seleccion, String nombre, String extension, double menor, double mayor) throws Excep{
+    public Buscador(File seleccion, String nombre, String extension, String antes, String despues, double menor, double mayor) throws Excep{
         if(seleccion.exists()){
             this.seleccion=seleccion;
             this.nombre=nombre;
             this.extension=extension;
+            this.antes=antes;
+            this.despues=despues;
             this.menor= (long)Math.ceil(menor);
             this.mayor=(long)Math.ceil(mayor);
         }else
@@ -94,11 +96,11 @@ public class Buscador implements Runnable{
         validos= new ArrayList<>();
         regEx=".*";
         if((!nombre.equals(""))&&(!extension.equals(""))){
-            regEx=".*"+nombre+".*\\."+extension;
+            regEx=antes+".*"+nombre+".*"+despues+"\\."+extension;
         }else if((!nombre.equals(""))&&(extension.equals(""))){
-            regEx=".*"+nombre+".*";
+            regEx=antes+".*"+nombre+".*"+despues;
         }else if((nombre.equals(""))&&(!extension.equals(""))){
-            regEx=".*\\."+extension;
+            regEx=antes+".*"+despues+"\\."+extension;
         }
         Pattern patron=Pattern.compile(regEx);
         Matcher validar;
