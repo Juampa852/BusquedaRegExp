@@ -21,13 +21,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class Buscador{
     private ArrayList<File> lista=new ArrayList<>();
     private File seleccion;
-    private String nombre, extension, regEx="";
+    private String nombre, extension, antes, despues, regEx="";
     private long menor, mayor;
-    public Buscador(File seleccion, String nombre, String extension, double menor, double mayor) throws Excep{
+    public Buscador(File seleccion, String nombre, String extension, String antes, String despues, double menor, double mayor) throws Excep{
         if(seleccion.exists()){
             this.seleccion=seleccion;
             this.nombre=nombre;
             this.extension=extension;
+            this.antes=antes;
+            this.despues=despues;
             this.menor= (long)Math.ceil(menor);
             this.mayor=(long)Math.ceil(mayor);
         }else
