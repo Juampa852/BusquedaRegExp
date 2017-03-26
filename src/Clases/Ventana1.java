@@ -62,6 +62,10 @@ public class Ventana1 extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         carpetaField = new javax.swing.JTextField();
         regExButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        empiezaField = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        terminaField = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         lista = new javax.swing.JList<>();
         abrirButton = new javax.swing.JButton();
@@ -100,7 +104,7 @@ public class Ventana1 extends javax.swing.JFrame {
 
         jLabel3.setText("Extensión:");
 
-        extensionField.setNextFocusableComponent(tamSpinner1);
+        extensionField.setNextFocusableComponent(empiezaField);
         extensionField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 extensionFieldKeyReleased(evt);
@@ -146,6 +150,24 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Empieza con:");
+
+        empiezaField.setNextFocusableComponent(terminaField);
+        empiezaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                empiezaFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel7.setText("Termina en:");
+
+        terminaField.setNextFocusableComponent(tamSpinner1);
+        terminaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                terminaFieldKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -178,13 +200,21 @@ public class Ventana1 extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(empiezaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(terminaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(93, 93, 93)
                         .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(regExButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +232,11 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(empiezaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(terminaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
@@ -338,15 +372,25 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_carpetaContButtonActionPerformed
+
+    private void empiezaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_empiezaFieldKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_empiezaFieldKeyReleased
+
+    private void terminaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_terminaFieldKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_terminaFieldKeyReleased
     private void busqueda (){
        seleccion=new File(carpetaField.getText());
        if(seleccion.exists()){
            try {
                String nombre=nombreField.getText().trim();
                String extension= extensionField.getText().trim();
+               String empieza = empiezaField.getText().trim();
+               String termina = terminaField.getText().trim();
                double menor=((double)(tamSpinner1.getValue()))*pow(1024.00,unidadCombo1.getSelectedIndex()+1);
                double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
-               buscar = new Buscador(seleccion,nombre,extension,menor, mayor);
+               buscar = new Buscador(seleccion,nombre,extension,empieza, termina,menor, mayor);
                validos=buscar.validos();
                modelo=new CustomListModel();
                for (int i = 0; i < validos.size(); i++) {
@@ -399,12 +443,15 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton carpetaContButton;
     private javax.swing.JTextField carpetaField;
+    private javax.swing.JTextField empiezaField;
     private javax.swing.JTextField extensionField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> lista;
@@ -413,6 +460,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton seleccionCarpetaButton;
     private javax.swing.JSpinner tamSpinner1;
     private javax.swing.JSpinner tamSpinner2;
+    private javax.swing.JTextField terminaField;
     private javax.swing.JComboBox<String> unidadCombo1;
     private javax.swing.JComboBox<String> unidadCombo2;
     // End of variables declaration//GEN-END:variables
