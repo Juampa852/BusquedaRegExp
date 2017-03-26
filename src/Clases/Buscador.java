@@ -56,12 +56,13 @@ public class Buscador{
         ArrayList<String> validos= new ArrayList<>();
         regEx=".*";
         if((!nombre.equals(""))&&(!extension.equals(""))){
-            regEx=".*"+nombre+".*\\."+extension;
+            regEx=antes+".*"+nombre+".*"+despues+"\\."+extension;
         }else if((!nombre.equals(""))&&(extension.equals(""))){
-            regEx=".*"+nombre+".*";
+            regEx=antes+".*"+nombre+".*"+despues;
         }else if((nombre.equals(""))&&(!extension.equals(""))){
-            regEx=".*\\."+extension;
-        }
+            regEx=antes+".*"+despues+"\\."+extension;
+        }else
+            regEx=antes+".*"+despues;
         Pattern patron=Pattern.compile(regEx);
         Matcher validar;
         if(seleccion.isDirectory()){
