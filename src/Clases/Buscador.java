@@ -65,7 +65,7 @@ public class Buscador{
                 try{
                     if (archivos[i].isDirectory()) {
                         DefaultMutableTreeNode actual = new DefaultMutableTreeNode(file.getName());
-                        if(!actual.isNodeDescendant(root)){
+                        if(!padre.isNodeDescendant(root)){
                             padre.add(actual);
                             recorrer(archivos[i],actual);
                         }else{
