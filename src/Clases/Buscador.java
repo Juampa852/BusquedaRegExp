@@ -33,7 +33,7 @@ public class Buscador extends Thread{
     private CustomListModel modelo;
     private JList list;
     private boolean correr=false;
-    public Buscador(File seleccion, String nombre, String extension, String antes, String despues, double menor, double mayor) throws Excep{
+    public Buscador(File seleccion, String nombre, String extension, String antes, String despues, double menor, double mayor, boolean inRegEx) throws Excep{
         if(seleccion.exists()){
             this.seleccion=seleccion;
             this.nombre=nombre;
@@ -42,15 +42,22 @@ public class Buscador extends Thread{
             this.despues=despues;
             this.menor= (long)Math.ceil(menor);
             this.mayor=(long)Math.ceil(mayor);
-            regEx=".*";
-            if((!nombre.equals(""))&&(!extension.equals(""))){
-                regEx=antes.toLowerCase()+".*"+nombre.toLowerCase()+".*"+despues.toLowerCase()+"\\."+extension.toLowerCase();
-            }else if((!nombre.equals(""))&&(extension.equals(""))){
-                regEx=antes.toLowerCase()+".*"+nombre.toLowerCase()+".*"+despues.toLowerCase();
-            }else if((nombre.equals(""))&&(!extension.equals(""))){
-                regEx=antes.toLowerCase()+".*"+despues.toLowerCase()+"\\."+extension.toLowerCase();
+            if(mayor!=0||menor!=0){
+                if(mayor<menor)
+                    throw new Excep("Los rangos de búsqueda por tamaño de archivo no son válidos");
+            }
+            if(!inRegEx){
+                regEx=".*";
+                if((!nombre.equals(""))&&(!extension.equals(""))){
+                    regEx=antes.toLowerCase()+".*"+nombre.toLowerCase()+".*"+despues.toLowerCase()+"\\."+extension.toLowerCase();
+                }else if((!nombre.equals(""))&&(extension.equals(""))){
+                    regEx=antes.toLowerCase()+".*"+nombre.toLowerCase()+".*"+despues.toLowerCase();
+                }else if((nombre.equals(""))&&(!extension.equals(""))){
+                    regEx=antes.toLowerCase()+".*"+despues.toLowerCase()+"\\."+extension.toLowerCase();
+                }else
+                    regEx=antes.toLowerCase()+".*"+despues.toLowerCase();
             }else
-                regEx=antes.toLowerCase()+".*"+despues.toLowerCase();
+                regEx=nombre.toLowerCase();
         }else
             throw new Excep("Este directorio o archivo no existe");
     }
