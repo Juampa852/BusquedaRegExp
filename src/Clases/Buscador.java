@@ -44,13 +44,13 @@ public class Buscador extends Thread{
             this.mayor=(long)Math.ceil(mayor);
             regEx=".*";
             if((!nombre.equals(""))&&(!extension.equals(""))){
-                regEx=antes+".*"+nombre+".*"+despues+"\\."+extension;
+                regEx=antes.toLowerCase()+".*"+nombre.toLowerCase()+".*"+despues.toLowerCase()+"\\."+extension.toLowerCase();
             }else if((!nombre.equals(""))&&(extension.equals(""))){
-                regEx=antes+".*"+nombre+".*"+despues;
+                regEx=antes.toLowerCase()+".*"+nombre.toLowerCase()+".*"+despues.toLowerCase();
             }else if((nombre.equals(""))&&(!extension.equals(""))){
-                regEx=antes+".*"+despues+"\\."+extension;
+                regEx=antes.toLowerCase()+".*"+despues.toLowerCase()+"\\."+extension.toLowerCase();
             }else
-                regEx=antes+".*"+despues;
+                regEx=antes.toLowerCase()+".*"+despues.toLowerCase();
         }else
             throw new Excep("Este directorio o archivo no existe");
     }
@@ -147,7 +147,7 @@ public class Buscador extends Thread{
 ////                    modelo.add("Sin resultados");
 //            }
         }else{
-            validar=patron.matcher(archivo.getName());
+            validar=patron.matcher(archivo.getName().toLowerCase());
             if(mayor!=0){
                     if(mayor>menor){
                         if(validar.matches()){
