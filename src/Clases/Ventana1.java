@@ -67,11 +67,12 @@ public class Ventana1 extends javax.swing.JFrame {
         empiezaField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         terminaField = new javax.swing.JTextField();
+        corriendoLabel = new javax.swing.JLabel();
+        detenerButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         lista = new javax.swing.JList<>();
         abrirButton = new javax.swing.JButton();
         carpetaContButton = new javax.swing.JButton();
-        progress1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Buscador de Archivos");
@@ -157,6 +158,15 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         });
 
+        corriendoLabel.setText("Detenido");
+
+        detenerButton.setText("Detener");
+        detenerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                detenerButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -172,24 +182,17 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nombreField))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(empiezaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(terminaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(regExButton)))
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(extensionField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(empiezaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(terminaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(134, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel4)
@@ -204,6 +207,16 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(unidadCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 262, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(detenerButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(regExButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(corriendoLabel)
+                .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +250,9 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buscarButton)
-                    .addComponent(regExButton)))
+                    .addComponent(regExButton)
+                    .addComponent(corriendoLabel)
+                    .addComponent(detenerButton)))
         );
 
         jScrollPane3.setViewportView(lista);
@@ -272,10 +287,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         .addComponent(abrirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(carpetaContButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(progress1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -284,9 +296,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(progress1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(abrirButton)
@@ -367,15 +377,20 @@ public class Ventana1 extends javax.swing.JFrame {
     }//GEN-LAST:event_carpetaContButtonActionPerformed
 
     private void empiezaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_empiezaFieldKeyReleased
-        // TODO add your handling code here:
+        busqueda();
     }//GEN-LAST:event_empiezaFieldKeyReleased
 
     private void terminaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_terminaFieldKeyReleased
-        // TODO add your handling code here:
+        busqueda();
     }//GEN-LAST:event_terminaFieldKeyReleased
+
+    private void detenerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detenerButtonActionPerformed
+        if(buscar!=null)
+            buscar.parar();
+    }//GEN-LAST:event_detenerButtonActionPerformed
     private void busqueda (){
-        if(exe!=null)
-            exe.stop();
+        if(buscar!=null)
+            buscar.parar();
         seleccion=new File(carpetaField.getText());
         if(seleccion.exists()){
            try {
@@ -386,9 +401,8 @@ public class Ventana1 extends javax.swing.JFrame {
                 double menor=((double)(tamSpinner1.getValue()))*pow(1024.00,unidadCombo1.getSelectedIndex()+1);
                 double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
                 buscar = new Buscador(seleccion,nombre,extension,empieza,termina,menor, mayor);
-                buscar.variables(progress1,lista);
-                exe=new Thread(buscar);
-                exe.start();
+                buscar.variables(corriendoLabel,lista);
+                buscar.start();
                 
                 /*while(exe.isAlive()){
                     validos=buscar.validos();
@@ -445,6 +459,8 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton carpetaContButton;
     private javax.swing.JTextField carpetaField;
+    private javax.swing.JLabel corriendoLabel;
+    private javax.swing.JButton detenerButton;
     private javax.swing.JTextField empiezaField;
     private javax.swing.JTextField extensionField;
     private javax.swing.JLabel jLabel1;
@@ -458,7 +474,6 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> lista;
     private javax.swing.JTextField nombreField;
-    private javax.swing.JProgressBar progress1;
     private javax.swing.JButton regExButton;
     private javax.swing.JButton seleccionCarpetaButton;
     private javax.swing.JSpinner tamSpinner1;
