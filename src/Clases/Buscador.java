@@ -29,7 +29,7 @@ public class Buscador extends Thread{
     private String nombre, extension, antes, despues, regEx;
     private long menor, mayor;
     private ArrayList<String> validos;
-    private JLabel mostrar;
+    private JLabel mostrar, conteo;
     private CustomListModel modelo;
     private JList list;
     private boolean correr=false;
@@ -61,9 +61,10 @@ public class Buscador extends Thread{
         }else
             throw new Excep("Este directorio o archivo no existe");
     }
-    public void variables(JLabel label, JList lista){
+    public void variables(JLabel label, JList lista, JLabel conteo){
         this.mostrar=label;
         this.list=lista;
+        this.conteo=conteo;
     }
     public void parar(){
         correr=false;
@@ -81,8 +82,13 @@ public class Buscador extends Thread{
                             recorrer(archivos[i]);
                         } else {
                             if(validar(archivos[i])){
-                                modelo.add(archivos[i].getAbsolutePath().substring(seleccion.getAbsolutePath().length()+1)/*+File.separatorChar+archivos[i].getName()*/);
-//                                list.setModel(modelo);
+                                try{
+                                    modelo.add(archivos[i].getAbsolutePath().substring(seleccion.getAbsolutePath().length()+1)/*+File.separatorChar+archivos[i].getName()*/);
+                                    conteo.setText("Encontrados: "+modelo.getSize());
+                                    sleep(10);
+                                }catch (Exception ex){
+                                    
+                                }
                             }
                         }
                     }catch (Exception ex){
@@ -207,15 +213,19 @@ public class Buscador extends Thread{
 
     @Override
     public void run(){
-        correr=true;
-//        while (correr){
+        try {
+            correr=true;
             modelo=new CustomListModel();
             mostrar.setText("Buscando...");
             list.setModel(modelo);
             recorrer(seleccion);
-//            break;
-//        }
-        correr=false;
-        mostrar.setText("Detenido");
+            sleep(100);
+            modelo.add("");
+            modelo.eliminar(modelo.getSize()-1);
+            correr=false;
+            mostrar.setText("Detenido");
+        } catch (InterruptedException ex) {
+            //Logger.getLogger(Buscador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

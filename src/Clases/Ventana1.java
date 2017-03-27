@@ -74,6 +74,7 @@ public class Ventana1 extends javax.swing.JFrame {
         lista = new javax.swing.JList<>();
         abrirButton = new javax.swing.JButton();
         carpetaContButton = new javax.swing.JButton();
+        conteoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Buscador de Archivos");
@@ -197,7 +198,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(terminaField, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(151, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(140, Short.MAX_VALUE)
                 .addComponent(detenerButton)
@@ -282,22 +283,23 @@ public class Ventana1 extends javax.swing.JFrame {
             }
         });
 
+        conteoLabel.setText("Encontrados: 0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane3)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(258, 258, 258)
                         .addComponent(abrirButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(carpetaContButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(conteoLabel)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -311,7 +313,8 @@ public class Ventana1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(abrirButton)
-                    .addComponent(carpetaContButton))
+                    .addComponent(carpetaContButton)
+                    .addComponent(conteoLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -432,7 +435,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 double menor=((double)(tamSpinner1.getValue()))*pow(1024.00,unidadCombo1.getSelectedIndex()+1);
                 double mayor=((double)(tamSpinner2.getValue()))*pow(1024.00,unidadCombo2.getSelectedIndex()+1);
                 buscar = new Buscador(seleccion,nombre,extension,empieza,termina,menor, mayor,regExCheck.isSelected());
-                buscar.variables(corriendoLabel,lista);
+                buscar.variables(corriendoLabel,lista, conteoLabel);
                 buscar.start();
                 
                 /*while(exe.isAlive()){
@@ -490,6 +493,7 @@ public class Ventana1 extends javax.swing.JFrame {
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton carpetaContButton;
     private javax.swing.JTextField carpetaField;
+    private javax.swing.JLabel conteoLabel;
     private javax.swing.JLabel corriendoLabel;
     private javax.swing.JButton detenerButton;
     private javax.swing.JTextField empiezaField;
