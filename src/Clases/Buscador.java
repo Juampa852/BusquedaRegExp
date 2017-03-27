@@ -85,7 +85,7 @@ public class Buscador extends Thread{
                                 try{
                                     modelo.add(archivos[i].getAbsolutePath().substring(seleccion.getAbsolutePath().length()+1)/*+File.separatorChar+archivos[i].getName()*/);
                                     conteo.setText("Encontrados: "+modelo.getSize());
-                                    sleep(10);
+                                    sleep(5);
                                 }catch (Exception ex){
                                     
                                 }
@@ -213,19 +213,19 @@ public class Buscador extends Thread{
 
     @Override
     public void run(){
-        try {
+//        try {
             correr=true;
             modelo=new CustomListModel();
             mostrar.setText("Buscando...");
             list.setModel(modelo);
             recorrer(seleccion);
-            sleep(100);
+            //sleep(100);
             modelo.add("");
             modelo.eliminar(modelo.getSize()-1);
             correr=false;
             mostrar.setText("Detenido");
-        } catch (InterruptedException ex) {
-            //Logger.getLogger(Buscador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        } catch (InterruptedException ex) {
+//            //Logger.getLogger(Buscador.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }
